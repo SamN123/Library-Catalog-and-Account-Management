@@ -11,20 +11,21 @@ class Library {
 struct Book{
 	int bookID;
 	string title; 
-	string author; 
-	bool isOpen; 
+	bool isOpen;
 	
-	Book(int bookID, string title, string author, bool isOpen);
+	Book(int bookID, string title, bool isOpen);
 };
 
 // customer struct to be used in library class 
 struct Customer{
-	int customerID;
 	string firstName;
 	string lastName; 
 	vector<int> borrowedBooks; // list of books the customer currently has 
 	
-	Customer(int customerID, sting firstName, string lastName); 
+	Customer(sting fName, string lName){
+		firstName = fName;
+		lastName = lName;
+	}
 };
 
 	
@@ -33,10 +34,16 @@ private:
     vector<Book> books;     
     vector<Customer> customers; 
     // simulated text files 
-    const string catalogFile = "catalog.txt";   // for the text file containing all books in library 
-    const string borrowedFile = "borrowed.txt";  // for the text file containing only borrowed books 
+    const string catalogFile = "Catalog.txt";   // for the text file containing all books in library 
+    const string clientFile = "Client.txt";  // for the text file containing only borrowed books 
     
-    int hashFunction(const string& title); // prototype for hashing book title to create unique id 
+    int hashFunction(const string& entry){
+    int sum = 0;
+    for (char c : entry) {
+        sum += static_cast<int>(c);
+    }
+    return sum;
+    }; // prototype for hashing book title to create unique id 
     
 public:
 	
@@ -65,6 +72,7 @@ int menu() {
     return choice;
 }
 
+}
 
 int main() {
 	
@@ -99,3 +107,4 @@ int main() {
 
     return 0;
 }
+
