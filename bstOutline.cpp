@@ -1,10 +1,15 @@
+//each node has three inputs
 class Node {
 public:
     int data;
+    string name;
+    float balance;
     Node* left;
     Node* right;
-    explicit Node(int data){
+    explicit Node(int data, string name, float balance){
         this->data = data;
+        this->name = std::move(name);
+        this->balance = balance;
         this->left = nullptr;
         this->right = nullptr;
     }
@@ -12,33 +17,35 @@ public:
 class BinaryTree {
 public:
     Node* rootNode;
-    explicit BinaryTree(int data){
-        rootNode = new Node(data);
+    explicit BinaryTree(int data, string name, float balance){
+        rootNode = new Node(data, std::move(name), balance);
     }
-    static Node* insertNode(Node* root, int data){
-        Node* newNode = new Node(data);
+    static Node* insertNode(Node* root, int data, string &name, float balance){
+        Node* newNode = new Node(data, name, balance);
         if (root == nullptr){
             root = newNode;
             return root;
         }
         if (data < root->data){
-            root->left = insertNode(root->left, data);
+            root->left = insertNode(root->left, data, name, balance);
         }
         else if (data > root->data){
-            root->right = insertNode(root->right, data);
+            root->right = insertNode(root->right, data, name, balance);
         }
         return root;
     }
-    void insert(int data){
-        rootNode = insertNode(rootNode, data);
+    void insert(int data, string name, float balance){
+        rootNode = insertNode(rootNode, data, name, balance);
     }
     void inOrder(Node* current){
         if (current == nullptr){
             return;
         }
         inOrder(current->left);
-        cout << current->data << " ";
-        inOrder(current->right);
+        cout << current->data << " "
+             << current->name << " "
+             << current->balance << endl;
+             inOrder(current->right);
     }
     void postOrder(Node *current){
         if (current == nullptr){
@@ -46,13 +53,17 @@ public:
         }
         postOrder(current->left);
         postOrder(current->right);
-        cout << current->data << " ";
+        cout << current->data << " "
+             << current->name << " "
+             << current->balance << endl;
     }
     void preOrder(Node *current){
         if (current == nullptr){
             return;
         }
-        cout << current->data << " ";
+        cout << current->data << " "
+             << current->name << " "
+             << current->balance << endl;
         preOrder(current->left);
         preOrder(current->right);
     }
@@ -65,7 +76,9 @@ public:
         while (!q.empty()){
             Node *current = q.front();
             q.pop();
-            cout << current->data << " ";
+            cout << current->data << " "
+                 << current->name << " "
+                 << current->balance << endl;
             if (current->left != nullptr){
                 q.push(current->left);
             }
@@ -103,20 +116,27 @@ public:
 };
 
 int main(){
-    BinaryTree binaryTree(30);
-    binaryTree.insert(10);
-    binaryTree.insert(5);
-    binaryTree.insert(17);
-    binaryTree.insert(55);
+    //BinaryTree binaryTree(50);
+    //binaryTree.insert(30);
+    //binaryTree.insert(20);
+    //binaryTree.insert(40);
+    //binaryTree.insert(70);
+    //binaryTree.insert(60);
+    //binaryTree.insert(80);
     //cout << "In Order: " << endl;
     //binaryTree.inOrder(binaryTree.rootNode);
     //cout << "\nPost Order: " << endl;
     //binaryTree.postOrder(binaryTree.rootNode);
     //cout << "\nPre Order: " << endl;
     //binaryTree.preOrder(binaryTree.rootNode);
-    BinaryTree::breadthFirst(binaryTree.rootNode);
-    binaryTree.deleteNode(binaryTree.rootNode, 55);
-    cout << "\n";
+    //BinaryTree::breadthFirst(binaryTree.rootNode);
+    //binaryTree.deleteNode(binaryTree.rootNode, 70);
+    //cout << "\n";
+    //BinaryTree::breadthFirst(binaryTree.rootNode);
+    BinaryTree binaryTree(50, "name1", 78.34);
+    binaryTree.insert(40, "name2", 28.23);
+    binaryTree.insert(60, "name3", 90.23);
+    binaryTree.inOrder(binaryTree.rootNode);
     BinaryTree::breadthFirst(binaryTree.rootNode);
 
     return 0;
