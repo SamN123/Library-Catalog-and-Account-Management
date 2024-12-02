@@ -4,6 +4,9 @@
 #include <fstream>// for file in and out 
 using namespace std; 
 
+
+class Library {
+
 // book struct to be used in library class 
 struct Book{
 	int bookID;
@@ -24,7 +27,6 @@ struct Customer{
 	Customer(int customerID, sting firstName, string lastName); 
 };
 
-class Library {
 	
 private:
 	// list of books and customers 
