@@ -1,6 +1,3 @@
-Text file containing client list 
-FIRST NAME | LAST NAME | CHECKED OUT BOOKS 
----------------------------------------------
 John|Smith|Happy Place;
 Carl|Anderson|;
 Anna|Doe|Hell Bent;
