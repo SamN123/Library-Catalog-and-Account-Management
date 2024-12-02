@@ -1,5 +1,9 @@
 TO DO: 
------------------------------------------------------------------------------
+----------------------------------------------------------------------------
+** Create a sorting function to sort list based on the hashed values.**
+** Use middle value as the root insert for the balanced bst ** 
+
+
 1. Create text files (2) for book catalog and borrowed catalog
 2. Create function implementations.
 3. Divide up tasks between members.
