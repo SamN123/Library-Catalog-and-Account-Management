@@ -2,6 +2,12 @@ Text file containing client list
 FIRST NAME | LAST NAME | CHECKED OUT BOOKS 
 ---------------------------------------------
 John|Smith|Happy Place;
+Carl|Anderson|;
 Anna|Doe|Hell Bent;
+Wilson|Felix|;
+Randall|Jackson|;
 Susan|Roberts|In the Lives of Puppets;
 Tommy|Sanders|The Housemaid's Secret;
+Mark|Hart|;
+Bobby|Whitlock|;
+Zoey|Barlowe|;
