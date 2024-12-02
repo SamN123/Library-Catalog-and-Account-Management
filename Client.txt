@@ -1,1 +1,7 @@
 Text file containing client list 
+FIRST NAME | LAST NAME | CHECKED OUT BOOKS 
+---------------------------------------------
+John|Smith|Happy Place;
+Anna|Doe|Hell Bent;
+Susan|Roberts|In the Lives of Puppets;
+Tommy|Sanders|The Housemaid's Secret;
