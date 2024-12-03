@@ -205,37 +205,6 @@ public:
         root->right = sortedBST(mid->next);
         return root;
     }
-    static Node *findMiddle(Node *&head){
-        Node *fast = head;
-        Node *slow = head;
-        Node *prev = nullptr;
-        while (fast != nullptr && fast->next != nullptr){
-            prev = slow;
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-        if (prev != nullptr){
-            prev->next = nullptr;
-        }
-        return slow;
-    }
-    static Node* sortedBST(Node *&head) {
-        if (head == nullptr){
-            return nullptr;
-        }
-        //finding the middle value to make root node
-        Node *mid = findMiddle(head);
-        Node *root = mid;
-        //need to return the root so the tree is split
-        if (head == mid){
-            return root;
-        }
-        //we want the head of the left sublist
-        //we want the head of the right sublist
-        root->left = sortedBST(head);
-        root->right = sortedBST(mid->next);
-        return root;
-    }
     void printPostOrder(){
         postOrder(rootNode);
         cout << endl;
