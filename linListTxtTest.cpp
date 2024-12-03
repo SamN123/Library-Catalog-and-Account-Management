@@ -7,6 +7,19 @@ this is how the txt file is structured
 1289, name5, 893.32
 */
 
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+#include <cmath>
+#include <cassert>
+#include <cstring>
+#include <fstream>
+#include <sstream>
+#include <fstream>
+#include <queue>
+using namespace std;
+
 class Node {
 public:
     int accountNum;
