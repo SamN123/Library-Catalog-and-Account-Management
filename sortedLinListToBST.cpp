@@ -204,7 +204,8 @@ public:
         root->left = sortedBST(head);
         root->right = sortedBST(mid->next);
         return root;
-    }static Node *findMiddle(Node *&head){
+    }
+    static Node *findMiddle(Node *&head){
         Node *fast = head;
         Node *slow = head;
         Node *prev = nullptr;
