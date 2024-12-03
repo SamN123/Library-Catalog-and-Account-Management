@@ -1,3 +1,4 @@
+// Sam's version of sortedLinList
 class Node {
 public:
     int data;
