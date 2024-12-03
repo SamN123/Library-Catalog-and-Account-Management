@@ -177,27 +177,62 @@ public:
     static Node *findMiddle(Node *&head){
         Node *fast = head;
         Node *slow = head;
+        Node *prev = nullptr;
         while (fast != nullptr && fast->next != nullptr){
+            prev = slow;
+            slow = slow->next;
             fast = fast->next->next;
-            if (fast != nullptr){
-                slow = slow->next;
-            }
         }
-        Node *temp = slow->next;
-        slow->next = nullptr;
-        return temp;
+        if (prev != nullptr){
+            prev->next = nullptr;
+        }
+        return slow;
     }
-    static Node* sortedBST(Node *&head, int start, int end) {
-        if (start > end) {
+    static Node* sortedBST(Node *&head) {
+        if (head == nullptr){
             return nullptr;
         }
-        int mid = start + (end - start) / 2;
-        Node* left = sortedBST(head, start, mid - 1);
-        Node* root = new Node(head->data);
-        root->left = left;
-        head = head->next;
-        root->right = sortedBST(head, mid + 1, end);
-
+        //finding the middle value to make root node
+        Node *mid = findMiddle(head);
+        Node *root = mid;
+        //need to return the root so the tree is split
+        if (head == mid){
+            return root;
+        }
+        //we want the head of the left sublist
+        //we want the head of the right sublist
+        root->left = sortedBST(head);
+        root->right = sortedBST(mid->next);
+        return root;
+    }static Node *findMiddle(Node *&head){
+        Node *fast = head;
+        Node *slow = head;
+        Node *prev = nullptr;
+        while (fast != nullptr && fast->next != nullptr){
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        if (prev != nullptr){
+            prev->next = nullptr;
+        }
+        return slow;
+    }
+    static Node* sortedBST(Node *&head) {
+        if (head == nullptr){
+            return nullptr;
+        }
+        //finding the middle value to make root node
+        Node *mid = findMiddle(head);
+        Node *root = mid;
+        //need to return the root so the tree is split
+        if (head == mid){
+            return root;
+        }
+        //we want the head of the left sublist
+        //we want the head of the right sublist
+        root->left = sortedBST(head);
+        root->right = sortedBST(mid->next);
         return root;
     }
     void printPostOrder(){
@@ -232,22 +267,27 @@ int main() {
     list.addNode(4);
     list.addNode(7);
 
+    cout << "Initial Linked List" << endl;
     list.printList();
+    //sort the list using merge sort
     list.sortList();
-    list.printList();
 
-    int length = getLength(list.getHead());
+    cout << "\nSorted Linked List" << endl;
+    list.printList();
 
     BinaryTree tree(0);
-    tree.rootNode = BinaryTree::sortedBST(list.getHead(), 0, length - 1);
-    tree.printPostOrder();
+    tree.rootNode = BinaryTree::sortedBST(list.getHead());
+    cout << "\nPost Order Traversal of The BST" << endl;
+    tree.postOrder(tree.rootNode);
 
-    //this will work for every value
+    //calling something recursively with no exit criteria
+
+    cout << "\n\nFinding Node With a Value of 4" << endl;
     Node *found = tree.searchNode(tree.rootNode, 4);
     if (found != nullptr){
-        cout << "found" << endl;
+        cout << "found Node 4" << endl;
     }
-
+    
     list.deleteList();
 
     return 0;
