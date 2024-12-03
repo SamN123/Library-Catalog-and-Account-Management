@@ -204,6 +204,15 @@ public:
         postOrder(rootNode);
         cout << endl;
     }
+    Node *searchNode(Node *root, int key){
+        if (root == nullptr || root->data == key){
+            return root;
+        }
+        if (root->data < key){
+            return searchNode(root->right, key);
+        }
+        return searchNode(root->left, key);
+    }
 };
 int getLength(Node *head){
     int length = 0;
@@ -232,6 +241,12 @@ int main() {
     BinaryTree tree(0);
     tree.rootNode = BinaryTree::sortedBST(list.getHead(), 0, length - 1);
     tree.printPostOrder();
+
+    //this will work for every value
+    Node *found = tree.searchNode(tree.rootNode, 4);
+    if (found != nullptr){
+        cout << "found" << endl;
+    }
 
     list.deleteList();
 
