@@ -23,17 +23,18 @@ using namespace std;
 class Node {
 public:
 // attributes for book node
-    int bookID, dueDate; 
+    int bookID; 
+    string bookTitle; 
+    int dueDate; // Added due date for books
 // attributes for client node 
     string firstName, lastName;
-// attribute used by both files 
-    string bookTitle; 
 
     Node* next;
-    Node* right;
-    Node* left; 
+    Node* right; // Pointer for right child (if needed)
+    Node* left;  // Pointer for left child (if needed)
 
-    Node() {
+    Node(int id = 0, string first = "", string last = "", string title = "", int due = 0)
+    : bookID(id), firstName(first), lastName(last), bookTitle(title), dueDate(due), next(nullptr), right(nullptr), left(nullptr) {
         // constructor needs to initialize values of attributes in node class 
         //depending on which input file is called in printclient()
     }
@@ -52,8 +53,8 @@ public:
         head = nullptr;
     }
 
-    void addClient(int num, string name, float balance) {
-        Node *newNode = new Node(num, std::move(name), balance);
+    void addClient(string first, string last) {
+        Node *newNode = new Node(0, std::move(first), std::move(last));
         if (head == nullptr) {
             head = newNode;
             return;
@@ -71,7 +72,7 @@ public:
         }
     }
 
-    Node *removeClient(int key){
+   Node *removeClient(int key){
         Node *current = head;
         Node *prev = nullptr;
         if (current != nullptr && current->accountNum == key){
@@ -91,7 +92,7 @@ public:
         prev->next = current->next;
         delete current;
         return head;
-    }
+    } 
 
     void deleteList(){
         Node *current = head;
@@ -102,6 +103,52 @@ public:
         }
     }
 };
+
+void printClients() {
+    linkedList clients;
+    ifstream inputFile("Client.txt");
+    if (!inputFile) {
+        cerr << "Error opening Client file!" << endl;
+        return;
+    }
+    string line;
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string firstName, lastName, bookTitle;
+        if (getline(ss, firstName, '|') && getline(ss, lastName, '|') && getline(ss, bookTitle, ';')) {
+            clients.addClient(firstName, lastName); 
+        }
+    }
+    inputFile.close();
+
+    
+}
+
+void printCatalog() {
+    linkedList catalog;
+    ifstream inputFile("catalog.txt");
+    if (!inputFile) {
+        cerr << "Error opening Catalog file!" << endl;
+        return;
+    }
+    string line;
+    while (getline(inputFile, line)) {
+        stringstream ss(line);
+        string title;
+        int dueDate;
+        if (getline(ss, title, '|') && ss >> dueDate) {
+            catalog.addBook(title, dueDate); // Add book to the catalog
+        }
+    }
+    inputFile.close();
+
+    // Print catalog
+    cout << "Catalog Loaded from File:\n";
+    catalog.printList();
+    catalog.deleteList();
+}
+
+
 // to write back into the file after
 /*void addClientToFile(const string& filename, int accountNum, const string& name, float balance){
     ofstream outputFile(filename, ios::app);
@@ -114,40 +161,7 @@ public:
     cout << "Client added successfully" << endl;
 } */
 
-void printClients(){
-    linkedList clients;
-    ifstream inputFile("filename.txt");
-    if (!inputFile) {
-        cerr << "Error opening file!" << endl;
-    }
-    string line;
-    while (getline(inputFile, line)) {
-        stringstream ss(line); //parse the line
-        string accountStr, name, balanceStr;
-        //slit the line by commas
-        if (getline(ss, accountStr, ',') && getline(ss, name, ',') && getline(ss, balanceStr, ',')) {
-            //convert account number to int
-            //convert balance to float
-            //trim leading spaces
-            int accountNum = stoi(accountStr);
-            float balance = stof(balanceStr);
-            name.erase(0, name.find_first_not_of(" "));
-            clients.addClient(accountNum, name, balance);
-        }
-    }
-    inputFile.close();
-    clients.deleteDuplicates();
-    ofstream outputFile("filename.txt", ios::trunc);
-    Node *current = clients.getHead();
-    while (current != nullptr) {
-        outputFile << current->accountNum << ", " << current->name << ", " << current->balance << "\n";
-        current = current->next;
-    }
-    outputFile.close();
-    cout << "Client List Loaded from File:\n";
-    clients.printList(); reverse();
-    clients.deleteList();
-}
+
 /*
 void deleteClient(int num){
     linkedList clients;
