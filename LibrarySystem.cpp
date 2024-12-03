@@ -11,9 +11,9 @@ class Library {
 struct Book{
 	int bookID;
 	string title; 
-	bool isOpen;
+	int dueDate;
 	
-	Book(int bookID, string title, bool isOpen);
+	Book(int bookID, string title, int dueDate);
 };
 
 // customer struct to be used in library class 
