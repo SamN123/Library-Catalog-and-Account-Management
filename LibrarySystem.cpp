@@ -36,26 +36,26 @@ private:
     // simulated text files 
     const string catalogFile = "Catalog.txt";   // for the text file containing all books in library 
     const string clientFile = "Client.txt";  // for the text file containing only borrowed books 
-    
-    int hashFunction(const string& entry){
-    int sum = 0;
-    for (char c : entry) {
-        sum += static_cast<int>(c);
-    }
-    return sum;
-    }; // prototype for hashing book title to create unique id 
-    
+
 public:
-	
+
+        int hashFunction(const string& entry){
+        int sum = 0;
+        for (char c : entry) {
+        sum += static_cast<int>(c);
+         }
+        return sum;
+        }; // prototype for hashing book title to create unique id 
+    
 	void loadCatalog(); // load the book catalog from a text file 
 	void saveCatalog(); // save catalog to the file
-	void loadCheckedBooks(); // loads book checked out text file 
-	void saveCheckedBooks(); // saves checked books into text file 
-	void displaySortedCatalog(); // ** function to use sort function (binary search tree?) 
+	void loadClientList(); // loads book checked out text file 
+	void saveClientList(); // saves checked books into text file 
+	void sortList(); // ** function to use sort function (binary search tree?) 
 	void searchCatalog();
 	void borrowBook(); // adding customer to borrowed books text file 
 	void returnBook(); // removing customer from borrowed books text file 
-	void viewCustomerBooks();
+	
 	
 int menu() {
     int choice;
@@ -64,8 +64,7 @@ int menu() {
             "2. Search for a Book by Title\n" 
             "3. Borrow a Book\n"
             "4. Return a Book\n"
-            "5. View My Borrowed Books\n"
-            "6. Exit\n"
+            "5. Exit\n"
             "----------------------------------------\n";
     cout << "Enter your choice: ";
     cin >> choice;
@@ -94,10 +93,7 @@ int main() {
             case 4: // Return a book
                 library.returnBook();
                 break;
-            case 5: // View my borrowed books
-                library.viewCustomerBooks(); 
-                break;
-            case 6: // Exit
+            case 5: // Exit
                 cout << "Exiting program\n";
                 break;
             default:
