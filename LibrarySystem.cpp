@@ -196,7 +196,6 @@ struct Book{
 struct Customer{
 	string firstName;
 	string lastName; 
-	vector<int> borrowedBooks; // list of books the customer currently has 
 	
 	Customer(string fName, string lName){
 		firstName = fName;
