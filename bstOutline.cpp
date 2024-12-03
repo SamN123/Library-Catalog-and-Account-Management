@@ -114,7 +114,16 @@ public:
         return root;
     }
 };
-
+//placehodler hash function - 'most' cases will be unique
+int generateID(const string &name) {
+    const int prime = 31;
+    int hash = 0;
+    for (char c : name) {
+        hash = hash * prime + c;
+        hash %= 100000;
+    }
+    return hash;
+}
 int main(){
     //BinaryTree binaryTree(50);
     //binaryTree.insert(30);
@@ -133,11 +142,11 @@ int main(){
     //binaryTree.deleteNode(binaryTree.rootNode, 70);
     //cout << "\n";
     //BinaryTree::breadthFirst(binaryTree.rootNode);
-    BinaryTree binaryTree(50, "name1", 78.34);
-    binaryTree.insert(40, "name2", 28.23);
-    binaryTree.insert(60, "name3", 90.23);
+    BinaryTree binaryTree(generateID("name1"), "name1", 78.34);
+    binaryTree.insert(generateID("name2"), "name2", 28.23);
+    binaryTree.insert(generateID("name3"), "name3", 90.23);
     binaryTree.inOrder(binaryTree.rootNode);
-    BinaryTree::breadthFirst(binaryTree.rootNode);
+    //BinaryTree::breadthFirst(binaryTree.rootNode);
 
     return 0;
 }
