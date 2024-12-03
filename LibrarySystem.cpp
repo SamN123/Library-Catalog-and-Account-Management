@@ -4,6 +4,19 @@
 #include <fstream>// for file in and out 
 using namespace std; 
 
+/* string line;
+    while (getline(inputFile, line)) {
+        stringstream ss(line); // Parse the line
+        string title; 
+        string dateStr; 
+        
+        // Split the line by the pipe delimiter
+        if (getline(ss, title, '|') && getline(ss, dateStr, ';')) {
+            // Convert the date string to an integer
+            int date = stoi(dateStr); 
+            string bookTitle = stoi(title);
+        } */
+
 
 class Library {
 
