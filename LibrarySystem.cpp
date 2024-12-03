@@ -205,9 +205,7 @@ struct Customer{
 
 	
 private:
-	// list of books and customers 
-    vector<Book> books;     
-    vector<Customer> customers; 
+
     // simulated text files 
     const string catalogFile = "Catalog.txt";   // for the text file containing all books in library 
     const string clientFile = "Client.txt";  // for the text file containing only borrowed books 
