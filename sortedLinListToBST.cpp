@@ -214,8 +214,12 @@ public:
         if (root->data == key){
             root->data = newVal;
         }
-        root->left = findReplace(root->left, key, newVal);
-        root->right = findReplace(root->right, key, newVal);
+        if (key < root->data){
+            root->left = findReplace(root->left, key, newVal);
+        }
+        if (key > root->data){
+            root->right = findReplace(root->right, key, newVal);
+        }
         return root;
     }
     Node *searchNode(Node *root, int key){
