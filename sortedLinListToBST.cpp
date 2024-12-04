@@ -286,6 +286,9 @@ int main() {
     cout << "\nPre Order Traversal of The BST" << endl;
     tree.preOrder(tree.rootNode);
 
+    cout << "\nBreadth First Search of The BST" << endl;
+    BinaryTree::breadthFirst(tree.rootNode);    
+
     //calling something recursively with no exit criteria
 
     cout << "\n\nFinding Node With a Value of 4" << endl;
