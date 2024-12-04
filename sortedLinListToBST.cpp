@@ -4,6 +4,7 @@ public:
     Node *left;
     Node *right;
     Node *next;
+    bool stop = false;
     Node(int data) {
         this->data = data;
         this->left= nullptr;
@@ -188,7 +189,7 @@ public:
         }
         return slow;
     }
-    static Node* sortedBST(Node *&head) {
+    static Node* balancedBST(Node *&head) {
         if (head == nullptr){
             return nullptr;
         }
@@ -201,23 +202,26 @@ public:
         }
         //we want the head of the left sublist
         //we want the head of the right sublist
-        root->left = sortedBST(head);
-        root->right = sortedBST(mid->next);
+        root->left = balancedBST(head);
+        root->right = balancedBST(mid->next);
+        mid->next = nullptr;
         return root;
     }
-    void printPostOrder(){
-        postOrder(rootNode);
-        cout << endl;
+    static void recreateLinkage(Node *root, Node *&prev){
+        if (root == nullptr) return;
+        recreateLinkage(root->left, prev);
+        if (prev != nullptr) prev->next = root; prev = root;
+        recreateLinkage(root->right, prev);
     }
     Node *findReplace(Node *root, int key, int newVal){
         if (root == nullptr) return nullptr;
         if (root->data == key){
             root->data = newVal;
         }
-        if (key < root->data){
+        else if (key < root->data){
             root->left = findReplace(root->left, key, newVal);
         }
-        if (key > root->data){
+        else {
             root->right = findReplace(root->right, key, newVal);
         }
         return root;
@@ -231,7 +235,9 @@ public:
         }
         return searchNode(root->left, key);
     }
+
 };
+/*
 int getLength(Node *head){
     int length = 0;
     while (head != nullptr){
@@ -240,6 +246,7 @@ int getLength(Node *head){
     }
     return length;
 }
+*/
 int main() {
     LinkedList list;
     list.addNode(1);
@@ -249,6 +256,10 @@ int main() {
     list.addNode(5);
     list.addNode(4);
     list.addNode(7);
+    list.addNode(9);
+    list.addNode(12);
+    list.addNode(24);
+    list.addNode(28);
 
     cout << "Initial Linked List" << endl;
     list.printList();
@@ -258,10 +269,22 @@ int main() {
     cout << "\nSorted Linked List" << endl;
     list.printList();
 
+    //both list.printList() func are test cases
     BinaryTree tree(0);
-    tree.rootNode = BinaryTree::sortedBST(list.getHead());
+    tree.rootNode = BinaryTree::balancedBST(list.getHead());
+    //list.printList();
+    Node *prev = nullptr;
+    BinaryTree::recreateLinkage(tree.rootNode, prev);
+    //list.printList();
+
+    cout << "\nIn Order Traversal of The BST" << endl;
+    tree.inOrder(tree.rootNode);
+
     cout << "\nPost Order Traversal of The BST" << endl;
     tree.postOrder(tree.rootNode);
+
+    cout << "\nPre Order Traversal of The BST" << endl;
+    tree.preOrder(tree.rootNode);
 
     //calling something recursively with no exit criteria
 
@@ -272,9 +295,10 @@ int main() {
     }
 
     cout << "\nReplacing a Value" << endl;
-    tree.findReplace(tree.rootNode, 24, 25);
+    tree.findReplace(tree.rootNode, 28, 25);
     tree.inOrder(tree.rootNode);
-    
+
+
     list.deleteList();
 
     return 0;
