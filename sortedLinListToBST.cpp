@@ -209,6 +209,15 @@ public:
         postOrder(rootNode);
         cout << endl;
     }
+    Node *findReplace(Node *root, int key, int newVal){
+        if (root == nullptr) return nullptr;
+        if (root->data == key){
+            root->data = newVal;
+        }
+        root->left = findReplace(root->left, key, newVal);
+        root->right = findReplace(root->right, key, newVal);
+        return root;
+    }
     Node *searchNode(Node *root, int key){
         if (root == nullptr || root->data == key){
             return root;
@@ -257,6 +266,10 @@ int main() {
     if (found != nullptr){
         cout << "found Node 4" << endl;
     }
+
+    cout << "\nReplacing a Value" << endl;
+    tree.findReplace(tree.rootNode, 24, 25);
+    tree.inOrder(tree.rootNode);
     
     list.deleteList();
 
