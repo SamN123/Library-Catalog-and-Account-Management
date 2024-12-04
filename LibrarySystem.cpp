@@ -381,11 +381,19 @@ int main() {
                     "How long would you like to borrow this for?" << endl;
                     cin >> checkoutDays;
                     traverse->date = date.newDate(checkoutDays);
-                    cout << traverse->title << " is due on " << traverse->date;
+                    cout << traverse->title << " is due on " << traverse->date << endl;
                 }
                 break;
             case 4: // Return a book
-                //library.returnBook();
+                cout << "Please enter the title of the book you'd like to return" << endl;
+                cin.ignore();
+                getline(cin, input); cout << endl;
+                traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
+                if(traverse == nullptr) cout << "Book not found!" << endl; 
+                else {
+                    traverse->date = 0;
+                    cout << "Thank you! Have a good day" << endl;
+                }
                 break;
             case 5: // Exit
                 cout << "Exiting program\n";
