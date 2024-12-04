@@ -1,5 +1,19 @@
 TO DO: 
 ----------------------------------------------------------------------------
+FUTURE IMPLEMENTATIONS: 
+1. Add a client database
+   -> Track who has what
+   -> Track who has an account
+   -> Check if client has account
+   -> Block checkouts if client has overdue books
+   -> Add renewals
+2. Catalog Improvements
+   -> add/remove books to catalog
+   -> view all in alphabetical function
+3. Finish file stream out
+   
+
+
 ** Create a sorting function to sort list based on the hashed values.**
 ** Use middle value as the root insert for the balanced bst ** 
 
