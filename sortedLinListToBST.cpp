@@ -1,12 +1,31 @@
+#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
+#include <cmath>
+#include <cassert>
+#include <cstring>
+#include <fstream>
+#include <sstream>
+#include <fstream>
+#include <queue>
+#include <algorithm>
+#include <cctype>
+using namespace std;
+
 class Node {
 public:
-    int data;
+    int key;
+    string title;
+    int date;
     Node *left;
     Node *right;
     Node *next;
     bool stop = false;
-    Node(int data) {
-        this->data = data;
+    Node(int key, string title, int date) {
+        this->key = key;
+        this->title = std::move(title);
+        this->date = date;
         this->left= nullptr;
         this->right = nullptr;
         this->next = nullptr;
@@ -18,8 +37,8 @@ public:
     LinkedList(){
         this->headNode = nullptr;
     }
-    void addNode(int data) {
-        Node *newNode = new Node(data);
+    void addNode(int key, string title, int date) {
+        Node *newNode = new Node(key, std::move(title), date);
         if (headNode == nullptr) {
             headNode = newNode;
             return;
@@ -43,7 +62,7 @@ public:
     Node *merge(Node *first, Node *second) {
         if (first == nullptr) return second;
         if (second == nullptr) return first;
-        if (first->data < second->data) {
+        if (first->key < second->key) {
             first->next = merge(first->next, second);
             return first;
         }
@@ -64,7 +83,10 @@ public:
     void printList() {
         Node *curr = headNode;
         while (curr != nullptr) {
-            cout << curr->data << " ";
+            cout << curr->key << " "
+                 << curr->title << " "
+                 << curr->date << " "
+                 << endl;
             curr = curr->next;
         }
         cout << endl;
@@ -87,32 +109,47 @@ public:
 class BinaryTree {
 public:
     Node* rootNode;
-    explicit BinaryTree(int data){
-        rootNode = new Node(data);
+    explicit BinaryTree(int key, string title, int date){
+        rootNode = new Node(key, std::move(title), date);
     }
-    static Node* insertNode(Node* root, int data){
-        Node* newNode = new Node(data);
+    static Node* insertNode(Node* root, int key, string &title, int date){
+        Node* newNode = new Node(key, std::move(title), date);
         if (root == nullptr){
             root = newNode;
             return root;
         }
-        if (data < root->data){
-            root->left = insertNode(root->left, data);
+        if (key < root->key){
+            root->left = insertNode(root->left, key, title, date);
         }
-        else if (data > root->data){
-            root->right = insertNode(root->right, data);
+        else if (key > root->key){
+            root->right = insertNode(root->right, key, title, date);
         }
         return root;
     }
-    void insert(int data){
-        rootNode = insertNode(rootNode, data);
+    void insert(int key, string title, int date){
+        rootNode = insertNode(rootNode, key, title, date);
     }
     void inOrder(Node* current){
         if (current == nullptr){
             return;
         }
         inOrder(current->left);
-        cout << current->data << " ";
+        if (current->date == 0){
+            cout << "Book ID -" << " "
+                 <<  current->key << " "
+                 << "Book Title:" << " "
+                 << current->title << " - "
+                 << "Book is available" << " "
+                 << endl;
+        }
+        else {
+            cout << "Book ID -" << " "
+                 <<  current->key << " "
+                 << "Book Title:" << " "
+                 << current->title << " - "
+                 << "Book is not available" << " "
+                 << endl;
+        }
         inOrder(current->right);
     }
     void postOrder(Node *current){
@@ -121,13 +158,43 @@ public:
         }
         postOrder(current->left);
         postOrder(current->right);
-        cout << current->data << " ";
+        if (current->date == 0){
+            cout << "Book ID -" << " "
+                 <<  current->key << " "
+                 << "Book Title:" << " "
+                 << current->title << " - "
+                 << "Book is available" << " "
+                 << endl;
+        }
+        else {
+            cout << "Book ID -" << " "
+                 <<  current->key << " "
+                 << "Book Title:" << " "
+                 << current->title << " - "
+                 << "Book is not available" << " "
+                 << endl;
+        }
     }
     void preOrder(Node *current){
         if (current == nullptr){
             return;
         }
-        cout << current->data << " ";
+        if (current->date == 0){
+            cout << "Book ID -" << " "
+                 <<  current->key << " "
+                 << "Book Title:" << " "
+                 << current->title << " - "
+                 << "Book is available" << " "
+                 << endl;
+        }
+        else {
+            cout << "Book ID -" << " "
+                 <<  current->key << " "
+                 << "Book Title:" << " "
+                 << current->title << " - "
+                 << "Book is not available" << " "
+                 << endl;
+        }
         preOrder(current->left);
         preOrder(current->right);
     }
@@ -140,7 +207,7 @@ public:
         while (!q.empty()){
             Node *current = q.front();
             q.pop();
-            cout << current->data << " ";
+            cout << current->key << " ";
             if (current->left != nullptr){
                 q.push(current->left);
             }
@@ -156,21 +223,21 @@ public:
         }
         return current;
     }
-    Node *deleteNode(Node *root, int data){
+    Node *deleteNode(Node *root, int key){
         if (root == nullptr) return nullptr;
-        if (data < root->data){
-            root->left = deleteNode(root->left, data);
+        if (key < root->key){
+            root->left = deleteNode(root->left, key);
         }
-        else if (data > root->data){
-            root->right = deleteNode(root->right, data);
+        else if (key > root->key){
+            root->right = deleteNode(root->right, key);
         }
         else {
             if (root->right == nullptr) return root->left;
             else if (root->left == nullptr) return root->right;
             else {
                 Node *temp = successor(root->right);
-                root->data = temp->data;
-                root->right = deleteNode(root->right, temp->data);
+                root->key = temp->key;
+                root->right = deleteNode(root->right, temp->key);
             }
         }
         return root;
@@ -215,10 +282,10 @@ public:
     }
     Node *findReplace(Node *root, int key, int newVal){
         if (root == nullptr) return nullptr;
-        if (root->data == key){
-            root->data = newVal;
+        if (root->key == key){
+            root->key = newVal;
         }
-        else if (key < root->data){
+        else if (key < root->key){
             root->left = findReplace(root->left, key, newVal);
         }
         else {
@@ -226,83 +293,100 @@ public:
         }
         return root;
     }
-    Node *searchNode(Node *root, int key){
-        if (root == nullptr || root->data == key){
+    Node *searchNode(Node *root, string title){
+        if (root == nullptr || root->title == title){
             return root;
         }
-        if (root->data < key){
-            return searchNode(root->right, key);
+        if (root->title < title){
+            return searchNode(root->right, title);
         }
-        return searchNode(root->left, key);
+        return searchNode(root->left, title);
     }
-
 };
-/*
-int getLength(Node *head){
-    int length = 0;
-    while (head != nullptr){
-        length++;
-        head = head->next;
+int generateID(const string &name) {
+    const int prime = 31;
+    int hash = 0;
+    for (char c : name) {
+        hash = hash * prime + c;
+        hash %= 100000;
     }
-    return length;
+    return hash;
 }
-*/
-int main() {
+string trim(const string &str) {
+    size_t start = str.find_first_not_of(" \t");
+    size_t end = str.find_last_not_of(" \t");
+    return (start == string::npos || end == string::npos) ? "" : str.substr(start, end - start + 1);
+}
+void normalize(string &str) {
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+}
+void printList(){
     LinkedList list;
-    list.addNode(1);
-    list.addNode(2);
-    list.addNode(6);
-    list.addNode(3);
-    list.addNode(5);
-    list.addNode(4);
-    list.addNode(7);
-    list.addNode(9);
-    list.addNode(12);
-    list.addNode(24);
-    list.addNode(28);
-
-    cout << "Initial Linked List" << endl;
-    list.printList();
-    //sort the list using merge sort
+    BinaryTree tree(0, " ", 0);
+    ifstream fileInput("filename.txt");
+    if (!fileInput){
+        cerr << "was not able to open file";
+        return;
+    }
+    string line;
+    while (getline(fileInput, line)){
+        stringstream ss(line);
+        string title;
+        string dateStr;
+        int date = 0;
+        if (getline(ss, title, '|') && getline(ss, dateStr, ';')){
+            date = stoi(dateStr);
+            list.addNode(generateID(title), title, date);
+        };
+    }
     list.sortList();
-
-    cout << "\nSorted Linked List" << endl;
-    list.printList();
-
-    //both list.printList() func are test cases
-    BinaryTree tree(0);
     tree.rootNode = BinaryTree::balancedBST(list.getHead());
-    //list.printList();
     Node *prev = nullptr;
     BinaryTree::recreateLinkage(tree.rootNode, prev);
-    //list.printList();
-
-    cout << "\nIn Order Traversal of The BST" << endl;
+    cout << "\nIn Order Traversal of The BST From File" << endl;
     tree.inOrder(tree.rootNode);
-
-    cout << "\nPost Order Traversal of The BST" << endl;
-    tree.postOrder(tree.rootNode);
-
-    cout << "\nPre Order Traversal of The BST" << endl;
-    tree.preOrder(tree.rootNode);
-
-    cout << "\nBreadth First Search of The BST" << endl;
-    BinaryTree::breadthFirst(tree.rootNode);    
-
-    //calling something recursively with no exit criteria
-
-    cout << "\n\nFinding Node With a Value of 4" << endl;
-    Node *found = tree.searchNode(tree.rootNode, 4);
-    if (found != nullptr){
-        cout << "found Node 4" << endl;
-    }
-
-    cout << "\nReplacing a Value" << endl;
-    tree.findReplace(tree.rootNode, 28, 25);
-    tree.inOrder(tree.rootNode);
-
-
     list.deleteList();
+}
+void searchList(string &bookTitle){
+    LinkedList list;
+    BinaryTree tree(0, " ", 0);
+    ifstream fileInput("filename.txt");
+    if (!fileInput){
+        cerr << "was not able to open file";
+        return;
+    }
+    string line;
+    while (getline(fileInput, line)){
+        stringstream ss(line);
+        string title;
+        string dateStr;
+        int date = 0;
+        if (getline(ss, title, '|') && getline(ss, dateStr, ';')){
+            date = stoi(dateStr);
+            title = trim(title);
+            normalize(title);
+            list.addNode(generateID(title), title, date);
+        };
+    }
+    bookTitle = trim(bookTitle);
+    normalize(bookTitle);
+    list.sortList();
+    tree.rootNode = BinaryTree::balancedBST(list.getHead());
+    Node *prev = nullptr;
+    BinaryTree::recreateLinkage(tree.rootNode, prev);
+    Node *found = tree.searchNode(tree.rootNode, bookTitle);
+    if (found != nullptr){
+        cout << bookTitle << " was found" << endl;
+    }
+    else {
+        cout << bookTitle << " was not found" << endl;
+    }
+    list.deleteList();
+}
+int main() {
+    printList();
+    string test = "Pride and Prejudice";
+    searchList(test);
 
     return 0;
 }
