@@ -125,6 +125,7 @@ int main() {
                 break;
             case 5: // Exit
                 cout << "Exiting program\n";
+		library.saveCatalog(list1.getHead());
                 break;
             default:
                 cout << "Invalid selection. Please try again.\n";
