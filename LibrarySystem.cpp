@@ -68,7 +68,12 @@ int main() {
         choice = menu();
         switch (choice) {
             case 1: // View all books in the catalog
-                //library.displaySortedCatalog(); 
+                traverse = list1.getHead();
+                cout << "The entire catalog" << endl;
+                while(traverse != nullptr) {
+                    cout << traverse->title << " Due Date: " << traverse->date << endl;
+                    traverse = traverse->next;
+                }
                 break;
             case 2: // Search for a book using its title 
                 cout << "Please enter the title of the book you'd like" << endl;
