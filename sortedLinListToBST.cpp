@@ -80,6 +80,16 @@ public:
         second = MergeSort(second);
         return merge(head, second);
     }
+    static Node *reverseList(Node *head){
+        Node *curr = head, *prev = nullptr, *next;
+        while (curr != nullptr){
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
     void printList() {
         Node *curr = headNode;
         while (curr != nullptr) {
@@ -101,6 +111,9 @@ public:
     }
     void sortList(){
         headNode = MergeSort(headNode);
+    }
+    void reverse(){
+        headNode = reverseList(headNode);
     }
     Node *&getHead() {
         return headNode;
@@ -280,27 +293,18 @@ public:
         if (prev != nullptr) prev->next = root; prev = root;
         recreateLinkage(root->right, prev);
     }
-    Node *findReplace(Node *root, int key, int newVal){
-        if (root == nullptr) return nullptr;
-        if (root->key == key){
-            root->key = newVal;
-        }
-        else if (key < root->key){
-            root->left = findReplace(root->left, key, newVal);
-        }
-        else {
-            root->right = findReplace(root->right, key, newVal);
-        }
-        return root;
-    }
-    Node *searchNode(Node *root, string title){
-        if (root == nullptr || root->title == title){
+    Node *searchNode(Node *root, int key) {
+        if (root == nullptr || root->key == key){
             return root;
         }
-        if (root->title < title){
-            return searchNode(root->right, title);
+        if (root->key < key){
+            return searchNode(root->right, key);
         }
-        return searchNode(root->left, title);
+        return searchNode(root->left, key);
+    }
+    static basic_string<char> normalize(string &str) {
+        transform(str.begin(), str.end(), str.begin(), ::tolower);
+        return {};
     }
 };
 int generateID(const string &name) {
@@ -312,14 +316,46 @@ int generateID(const string &name) {
     }
     return hash;
 }
-string trim(const string &str) {
-    size_t start = str.find_first_not_of(" \t");
-    size_t end = str.find_last_not_of(" \t");
-    return (start == string::npos || end == string::npos) ? "" : str.substr(start, end - start + 1);
+/*
+void testCaseNoTxt(){
+    LinkedList list;
+    list.addNode(generateID("The Catcher in the Rye"), "The Catcher in the Rye", 2024125);
+    list.addNode(generateID("Nineteen Eighty-Four"), "Nineteen Eighty-Four", 2024125);
+    list.addNode(generateID("Crime and Punishment"), "Crime and Punishment", 2024125);
+    list.addNode(generateID("War and Peace"), "War and Peace", 2024125);
+    list.addNode(generateID("Pride and Prejudice"), "Pride and Prejudice", 2024125);
+    list.addNode(generateID("The Scarlet Letter"), "The Scarlet Letter", 2024125);
+    list.addNode(generateID("The Sun Also Rises"), "The Sun Also Rises", 2024125);
+    cout << "Initial Linked List" << endl;
+    list.printList();
+    list.sortList();
+
+    cout << "\nSorted Linked List" << endl;
+    list.printList();
+
+    //both list.printList() func are test cases
+    BinaryTree tree(0, " ", 0);
+    tree.rootNode = BinaryTree::balancedBST(list.getHead());
+    //list.printList();
+    Node *prev = nullptr;
+    BinaryTree::recreateLinkage(tree.rootNode, prev);
+    //list.printList();
+
+    cout << "\nIn Order Traversal of The BST" << endl;
+    tree.inOrder(tree.rootNode);
+
+    cout << "\n\nFinding Node With a Title of 'The Sun Also Rises'" << endl;
+    Node *found = tree.searchNode(tree.rootNode, "The Sun Also Rises");
+    if (found != nullptr){
+        cout << "Title Found In Database" << endl;
+    }
+    else {
+        cout << "Title Not Found In Database" << endl;
+    }
+
+    list.deleteList();
 }
-void normalize(string &str) {
-    transform(str.begin(), str.end(), str.begin(), ::tolower);
-}
+*/
 void printList(){
     LinkedList list;
     BinaryTree tree(0, " ", 0);
@@ -363,30 +399,129 @@ void searchList(string &bookTitle){
         int date = 0;
         if (getline(ss, title, '|') && getline(ss, dateStr, ';')){
             date = stoi(dateStr);
-            title = trim(title);
-            normalize(title);
+            //title = trim(title);
+            //normalize(title);
             list.addNode(generateID(title), title, date);
         };
     }
-    bookTitle = trim(bookTitle);
-    normalize(bookTitle);
+    //bookTitle = trim(bookTitle);
+    //normalize(bookTitle);
     list.sortList();
     tree.rootNode = BinaryTree::balancedBST(list.getHead());
     Node *prev = nullptr;
     BinaryTree::recreateLinkage(tree.rootNode, prev);
-    Node *found = tree.searchNode(tree.rootNode, bookTitle);
-    if (found != nullptr){
-        cout << bookTitle << " was found" << endl;
+    Node *found = tree.searchNode(tree.rootNode, generateID(bookTitle));
+    if (found){
+        cout << found->title << " was found" << endl;
     }
     else {
         cout << bookTitle << " was not found" << endl;
     }
+    fileInput.close();
+    list.deleteList();
+}
+void checkOut(string &bookTitle){
+    LinkedList list;
+    BinaryTree tree(0, " ", 0);
+    ifstream fileInput("filename.txt");
+    if (!fileInput){
+        cerr << "was not able to open file";
+        return;
+    }
+    string line;
+    while (getline(fileInput, line)){
+        stringstream ss(line);
+        string title;
+        string dateStr;
+        int date = 0;
+        if (getline(ss, title, '|') && getline(ss, dateStr, ';')){
+            date = stoi(dateStr);
+            list.addNode(generateID(title), title, date);
+        }
+    }
+    list.reverse();
+    tree.rootNode = BinaryTree::balancedBST(list.getHead());
+    Node *prev = nullptr;
+    BinaryTree::recreateLinkage(tree.rootNode, prev);
+    fileInput.close();
+
+    Node *found = tree.searchNode(tree.rootNode, generateID(bookTitle));
+    if (found){
+        (found->date == 0) ? found->date = 1 : found->date = 0;
+    }
+    ofstream outputFile("filename.txt", ios::trunc);
+    if (!outputFile) {
+        cerr << "Error opening file!" << endl;
+        return;
+    }
+    Node *current = list.getHead();
+    while (current != nullptr){
+        outputFile << current->title << "|" << current->date << ";" << endl;
+        current = current->next;
+    }
+    outputFile.close();
     list.deleteList();
 }
 int main() {
+    /*
+    LinkedList list;
+    list.addNode(1);
+    list.addNode(2);
+    list.addNode(6);
+    list.addNode(3);
+    list.addNode(5);
+    list.addNode(4);
+    list.addNode(7);
+    list.addNode(9);
+    list.addNode(12);
+    list.addNode(24);
+    list.addNode(28);
+
+    cout << "Initial Linked List" << endl;
+    list.printList();
+    //sort the list using merge sort
+    list.sortList();
+
+    cout << "\nSorted Linked List" << endl;
+    list.printList();
+
+    //both list.printList() func are test cases
+    BinaryTree tree(0);
+    tree.rootNode = BinaryTree::balancedBST(list.getHead());
+    //list.printList();
+    Node *prev = nullptr;
+    BinaryTree::recreateLinkage(tree.rootNode, prev);
+    //list.printList();
+
+    cout << "\nIn Order Traversal of The BST" << endl;
+    tree.inOrder(tree.rootNode);
+
+    cout << "\nPost Order Traversal of The BST" << endl;
+    tree.postOrder(tree.rootNode);
+
+    cout << "\nPre Order Traversal of The BST" << endl;
+    tree.preOrder(tree.rootNode);
+
+    cout << "\nBreadth First Search of The BST" << endl;
+    BinaryTree::breadthFirst(tree.rootNode);
+
+    //calling something recursively with no exit criteria
+
+    cout << "\n\nFinding Node With a Value of 4" << endl;
+    Node *found = tree.searchNode(tree.rootNode, 4);
+    if (found != nullptr){
+        cout << "Found Node 4" << endl;
+    }
+
+    cout << "\nReplacing a Value: 28 Is Replaced With 25" << endl;
+    tree.findReplace(tree.rootNode, 28, 25);
+    tree.inOrder(tree.rootNode);
+
+    list.deleteList();
+    */;
     printList();
     string test = "Pride and Prejudice";
-    searchList(test);
+    checkOut(test);
 
     return 0;
 }
