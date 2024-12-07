@@ -27,6 +27,13 @@ class Date{
         day = stoi(date.substr(6,2));
     }
 
+    void setDate(int input) {
+        string temp = to_string(input);
+        year = stoi(temp.substr(0,4));
+        month = stoi(temp.substr(4,2));
+        day = stoi(temp.substr(6,2));
+    };
+
     void setDate(string input) {
         year = stoi(input.substr(0,4));
         month = stoi(input.substr(4,2));
