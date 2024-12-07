@@ -59,7 +59,8 @@ int main() {
     BinaryTree tree(list1.getHead());
     
     string input;
-
+    unsigned long int hashvalue = 0;
+	
     cout << "Please enter today's date" << endl;
     cin >> currentDate;
     Date date(currentDate);
@@ -81,7 +82,7 @@ int main() {
                 getline(cin, input); 
                 cout << endl;
                 hashvalue = library.hashFunction(input);
-                traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
+                traverse = tree.searchNode(tree.rootNode, hashvalue);
                 if(traverse == nullptr) cout << "Book not found!" << endl; 
                 else {
                     if (traverse->date!= 0) 
