@@ -15,7 +15,7 @@
 
 using namespace std; 
 
-bool testMODE = true;
+bool testMODE = false;
 
 int menu() {
     int choice = 0;
@@ -26,12 +26,12 @@ int menu() {
             "4. Return a Book\n"
             "5. Exit\n"
             "----------------------------------------\n";
-    if(testMODE=true) cout <<
+    if(testMODE==true) cout <<
             "6. Reload from file\n"
             "7. Print list of books\n"
             "8. Sort the list of books\n";
             
-    cout << "Enter your choice: ";
+    cout << dec << "Enter your choice: ";
     cin >> choice;
     return choice;
 }
@@ -47,11 +47,11 @@ int main() {
     Node* traverse = list1.getHead();
     while(traverse != nullptr) {
         traverse->key = library.hashFunction(traverse->title);
-        cout << hex << traverse->key << endl;
+        //cout << hex << traverse->key << endl;
         traverse = traverse->next;
     }
     
-    list1.printList();
+    //list1.printList();
     list1.sortList();
     list1.printList();
 
@@ -60,8 +60,8 @@ int main() {
     
     string input;
     unsigned long int hashvalue = 0;
-	
-    cout << "Please enter today's date" << endl;
+
+    cout << dec << "Please enter today's date" << endl;
     cin >> currentDate;
     Date date(currentDate);
     do {
@@ -70,9 +70,11 @@ int main() {
         switch (choice) {
             case 1: // View all books in the catalog
                 traverse = list1.getHead();
-                cout << "The entire catalog" << endl;
+                cout << hex << "The entire catalog" << endl;
                 while(traverse != nullptr) {
-                    cout << traverse->title << " Due Date: " << traverse->date << endl;
+                    cout << traverse->title << " Due Date: " << traverse->date;
+                    cout << " " << traverse->key;
+                    cout << endl;
                     traverse = traverse->next;
                 }
                 break;
@@ -81,8 +83,8 @@ int main() {
                 cin.ignore();
                 getline(cin, input); 
                 cout << endl;
-                hashvalue = library.hashFunction(input);
-                traverse = tree.searchNode(tree.rootNode, hashvalue);
+                //hashvalue = library.hashFunction(input);
+                traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
                 if(traverse == nullptr) cout << "Book not found!" << endl; 
                 else {
                     if (traverse->date!= 0) 
@@ -93,7 +95,7 @@ int main() {
                 }
                 break;
             case 3: // Borrow a book
-                 cout << "Please enter the title of the book you'd like" << endl;
+                cout << "Please enter the title of the book you'd like" << endl;
                 cin.ignore();
                 getline(cin, input); cout << endl;
                 traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
@@ -126,7 +128,7 @@ int main() {
                 break;
             case 5: // Exit
                 cout << "Exiting program\n";
-		library.saveCatalog(list1.getHead());
+                library.saveCatalog(list1.getHead());
                 break;
             default:
                 cout << "Invalid selection. Please try again.\n";
