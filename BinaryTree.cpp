@@ -99,7 +99,7 @@ public:
         postOrder(rootNode);
         std::cout << std::endl;
     }
-    Node* searchNode(Node* rootNode, int key2){
+    Node* searchNode(Node* rootNode, unsigned long int key2){
         if (rootNode == nullptr || rootNode->key == key2){
             return rootNode;
         }
