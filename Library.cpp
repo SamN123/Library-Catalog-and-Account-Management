@@ -75,8 +75,15 @@ public:
     return hash;
         };
 
-    void saveCatalog() {
-        std::ofstream outputFile("expanded_books_titles.txt");
+    void saveCatalog(Node* head) {
+        
+        std::ofstream outputFile("expanded_book_titles.txt");
+        while(head != nullptr){
+        outputFile << head->title <<"|" << head->date << ";";
+        if(head->next != nullptr) outputFile << "\n";
+        head = head->next;
+        }
+        outputFile.close();
     }
 
     
