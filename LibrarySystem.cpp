@@ -78,7 +78,9 @@ int main() {
             case 2: // Search for a book using its title 
                 cout << "Please enter the title of the book you'd like" << endl;
                 cin.ignore();
-                getline(cin, input); cout << endl;
+                getline(cin, input); 
+                cout << endl;
+                hashvalue = library.hashFunction(input);
                 traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
                 if(traverse == nullptr) cout << "Book not found!" << endl; 
                 else {
