@@ -1,13 +1,14 @@
 #include <iostream>
 #include "Node.cpp"
 
+using namespace std;
+
 class BinaryTree {
 public:
     Node* rootNode;
     explicit BinaryTree(Node* head, int counter){
         rootNode = sortedBST(head, counter);
     }
-
 
     void inOrder(Node* current){
         if (current == nullptr){
@@ -33,38 +34,6 @@ public:
         preOrder(current->left);
         preOrder(current->right);
     }
-    
-    /*static Node* findMiddle(Node *&head){
-        Node *fast = head;
-        Node *slow = head;
-        Node *prev = nullptr;
-
-        while (fast->next != nullptr && fast->next->next != nullptr && !fast->flag && !fast->next->flag){
-            prev = slow;
-            slow = slow->next;
-            fast = fast->next->next;
-        }
-        if(fast->next != nullptr) {
-            if((fast->next->next == nullptr) || (fast->next->flag)) {
-            prev = slow;
-            slow = slow->next;
-            }
-        }
-
-        if (prev != nullptr) prev->flag=true;
-        // delete fast;
-        // delete prev;
-        return slow;
-    }*/
-
-    // int getLength(Node *head){
-    //     int length = 0;
-    //     while (head != nullptr){
-    //         length++;
-    //         head = head->next;
-    //     }
-    //     return length;
-    // }
 
     static Node* findMiddle(int length, Node* list) {
         length = (length / 2) + 1; 
