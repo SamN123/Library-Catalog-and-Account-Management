@@ -11,6 +11,7 @@ public:
     LinkedList(){
         this->headNode = nullptr;
     }
+    //function allow for nodes to be added to the front of the list
     void addNode(std::string title, int date) {
         Node *newNode = new Node(title, date);
         if (headNode == nullptr) {
