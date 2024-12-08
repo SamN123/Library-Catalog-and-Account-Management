@@ -8,7 +8,6 @@ public:
         rootNode = sortedBST(head);
     }
 
-
     void inOrder(Node* current){
         if (current == nullptr){
             return;
@@ -33,33 +32,7 @@ public:
         preOrder(current->left);
         preOrder(current->right);
     }
-    /*static Node* findMiddle(Node* head){
-        Node *fast = head;
-        Node *slow = head;
-        while (fast != nullptr && fast->next != nullptr){
-            fast = fast->next->next;
-            if (fast != nullptr){
-                slow = slow->next;
-            }
-        }
-        Node *temp = slow->next;
-        slow->next = nullptr;
-        return temp;
-    }
-    static Node* sortedBST(Node *&head, int start, int end) {
-        if (start > end) {
-            return nullptr;
-        }
-        int mid = start + (end - start) / 2;
-        Node* left = sortedBST(head, start, mid - 1);
-        Node* root = new Node(head->key);
-        root->left = left;
-        head = head->next;
-        root->right = sortedBST(head, mid + 1, end);
-
-        return root;
-    }*/
-
+    
     static Node* findMiddle(Node *&head){
         Node *fast = head;
         Node *slow = head;
@@ -70,9 +43,6 @@ public:
             slow = slow->next;
             fast = fast->next->next;
         }
-        /*if (prev != nullptr){
-            prev->next = nullptr;
-        }*/
 
         if (prev != nullptr) prev->flag=true;
         return slow;
