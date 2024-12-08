@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <string>
-#include <vector>
 #include <fstream>
 #include <sstream>
 
@@ -56,9 +55,6 @@ public:
         outputFile.close();
     }
 
-	void sortList(); // ** function to use sort function (binary search tree?) 
-	void searchCatalog();
-	void borrowBook(); // adding customer to borrowed books text file 
-	void returnBook(); // removing customer from borrowed books text file 
+	
 	
 };
