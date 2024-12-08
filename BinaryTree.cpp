@@ -84,12 +84,3 @@ public:
         return searchNode(rootNode->left, key2);
     }
 };
-// Returns the length of the Binary Tree 
-int getLength(Node *head){
-    int length = 0;
-    while (head != nullptr){
-        length++;
-        head = head->next;
-    }
-    return length;
-}
