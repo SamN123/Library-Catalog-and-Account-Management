@@ -21,7 +21,7 @@ public:
         newNode->next = headNode;
         headNode = newNode;
     }
-    //split function allows for the the MergeSort function to be recursively split in half
+    //split function allows for the the MergeSort function to recursively split the list in half
     Node *split(Node *head) {
         Node *fast = head;
         Node *slow = head;
