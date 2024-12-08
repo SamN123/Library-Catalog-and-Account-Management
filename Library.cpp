@@ -8,36 +8,6 @@
 
 class Library {
 
-// book struct to be used in library class 
-// struct Book{
-// 	int bookID;
-// 	std::string title; 
-// 	int dueDate;
-//     Book* nextBook;
-	
-// 	Book(int bookID, std::string title, int dueDate);
-// };
-
-// customer struct to be used in library class 
-// struct Customer{
-// 	std::string firstName;
-// 	std::string lastName; 
-// 	std::vector<int> borrowedBooks; // list of books the customer currently has 
-	
-// 	Customer(std::string fName, std::string lName){
-// 		firstName = fName;
-// 		lastName = lName;
-// 	}
-// };
-
-	
-private:
-	// list of books and customers 
-    // std::vector<Book> books;     
-    // std::vector<Customer> customers; 
-    // simulated text files 
-    // const std::string catalogFile = "expanded_book_titles.txt";   // for the text file containing all books in library 
-    // const std::string clientFile = "expanded_book_titles.txt";  // for the text file containing only borrowed books 
 
 public:
 
@@ -86,11 +56,6 @@ public:
         outputFile.close();
     }
 
-    
-
-	//void saveCatalog(); // save catalog to the file
-	//void loadClientList(); // loads book checked out text file 
-	//void saveClientList(); // saves checked books into text file 
 	void sortList(); // ** function to use sort function (binary search tree?) 
 	void searchCatalog();
 	void borrowBook(); // adding customer to borrowed books text file 
