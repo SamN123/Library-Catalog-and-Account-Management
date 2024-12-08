@@ -84,7 +84,7 @@ int main() {
                 cout << endl;
                 hashvalue = library.hashFunction(input);
                 temp = tree.searchNode(tree.rootNode, hashvalue);
-                if(temp == nullptr) cout << "Book not found!" << endl; 
+                if(temp == nullptr) cout << input << " not found!" << endl; 
                 else {
                     if (temp->date!= 0) 
                     cout << "Sorry, that book is currently checked out\n"
@@ -98,7 +98,7 @@ int main() {
                 cin.ignore();
                 getline(cin, input); cout << endl;
                 temp = tree.searchNode(tree.rootNode, library.hashFunction(input));
-                if(temp == nullptr) cout << "Book not found!" << endl; 
+                if(temp == nullptr) cout << input << " not found!" << endl; 
                 else {
                     if (temp->date != 0) {
                     cout << "Sorry, that book is currently checked out\n"
@@ -119,7 +119,7 @@ int main() {
                 cin.ignore();
                 getline(cin, input); cout << endl;
                 temp = tree.searchNode(tree.rootNode, library.hashFunction(input));
-                if(temp == nullptr) cout << "Book not found!" << endl; 
+                if(temp == nullptr) cout << input <<  " not found!" << endl; 
                 else {
                     temp->date = 0;
                     cout << "Thank you! Have a good day" << endl;
