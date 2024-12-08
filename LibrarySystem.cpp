@@ -8,7 +8,7 @@
 using namespace std; 
 
 bool testMODE = false;
-
+// Menu function that contains the necessary user interface options and test case conditions 
 int menu() {
     int choice = 0;
     cout << "\nLibrary Management System\n"
@@ -27,16 +27,18 @@ int menu() {
     cin >> choice;
     return choice;
 }
-
+// Main Driver that manages the flow of the program 
 int main() {
-	LinkedList list1;
+    // Objects of type LinkedList and Library are created 	
+    LinkedList list1;
     Library library(list1);
     
     int choice;
     int checkoutDays;
     int currentDate;
-
+    
     Node* traverse = list1.getHead();
+    // Control Statement used to assign a hash key to a certain node for a given book title 	
     while(traverse != nullptr) {
         traverse->key = library.hashFunction(traverse->title);
         //cout << hex << traverse->key << endl;
@@ -47,12 +49,12 @@ int main() {
     list1.sortList();
     list1.printList();
 
-    
+    // Object of type BinaryTree created and initialized with the head node from linked list 
     BinaryTree tree(list1.getHead());
     
     string input;
     unsigned long int hashvalue = 0;
-
+    // Prompts user for an integer date (format: yyyymmdd) 
     cout << dec << "Please enter today's date" << endl;
     cin >> currentDate;
     Date date(currentDate);
