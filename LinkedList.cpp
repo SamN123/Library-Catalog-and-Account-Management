@@ -5,12 +5,20 @@
 #include <string>
 #include "Node.cpp"
 
+using namespace std;
+
 class LinkedList {
     Node *headNode;
 public:
     LinkedList(){
         this->headNode = nullptr;
     }
+
+    ~LinkedList(){
+        deleteList();
+        
+    }
+
     void addNode(std::string title, int date) {
         Node *newNode = new Node(title, date);
         if (headNode == nullptr) {
@@ -71,6 +79,7 @@ public:
             delete curr;
             curr = nextNode;
         }
+        headNode = nullptr;
     }
     void sortList(){
         headNode = MergeSort(headNode);
