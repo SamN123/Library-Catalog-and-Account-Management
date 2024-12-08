@@ -1,5 +1,13 @@
-#include <bits/stdc++.h>
+//#include <algorithm>
+//#include <iostream>
+//#include <vector>
+//#include <string>
+//#include <sstream>
+//#include <fstream>// for file in and out
+//#include <queue> 
+//#include <bits/stdc++.h>
 
+//#include "Node.cpp"
 #include "BinaryTree.cpp"
 #include "Date.cpp"
 #include "Library.cpp"
@@ -8,7 +16,7 @@
 using namespace std; 
 
 bool testMODE = false;
-// Menu function that contains the necessary user interface options and test case conditions 
+
 int menu() {
     int choice = 0;
     cout << "\nLibrary Management System\n"
@@ -27,34 +35,43 @@ int menu() {
     cin >> choice;
     return choice;
 }
-// Main Driver that manages the flow of the program 
+
 int main() {
-    // Objects of type LinkedList and Library are created 	
-    LinkedList list1;
+	LinkedList list1;
     Library library(list1);
     
     int choice;
     int checkoutDays;
     int currentDate;
-    
+    int counter = 1;
+
     Node* traverse = list1.getHead();
-    // Control Statement used to assign a hash key to a certain node for a given book title 	
     while(traverse != nullptr) {
         traverse->key = library.hashFunction(traverse->title);
         //cout << hex << traverse->key << endl;
         traverse = traverse->next;
+        counter++;
     }
     
     //list1.printList();
     list1.sortList();
     list1.printList();
 
-    // Object of type BinaryTree created and initialized with the head node from linked list 
-    BinaryTree tree(list1.getHead());
     
+    BinaryTree tree(list1.getHead(), counter);
+    //tree.inOrder(tree.rootNode);    
     string input;
     unsigned long int hashvalue = 0;
-    // Prompts user for an integer date (format: yyyymmdd) 
+
+    traverse = list1.getHead();
+    int i = 1;
+    while(traverse != nullptr){
+        if(tree.searchNode(tree.rootNode, library.hashFunction(traverse->title)) == nullptr) {
+        cout << i << " " << traverse->title << endl << traverse->key << " " << tree.searchNode(tree.rootNode, library.hashFunction(traverse->title)) << endl;
+        }
+        traverse = traverse->next; i++;
+    }
+
     cout << dec << "Please enter today's date" << endl;
     cin >> currentDate;
     Date date(currentDate);
@@ -77,8 +94,8 @@ int main() {
                 cin.ignore();
                 getline(cin, input); 
                 cout << endl;
-                //hashvalue = library.hashFunction(input);
-                traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
+                hashvalue = library.hashFunction(input);
+                traverse = tree.searchNode(tree.rootNode, hashvalue);
                 if(traverse == nullptr) cout << "Book not found!" << endl; 
                 else {
                     if (traverse->date!= 0) 

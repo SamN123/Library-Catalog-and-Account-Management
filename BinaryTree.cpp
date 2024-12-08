@@ -4,11 +4,11 @@
 class BinaryTree {
 public:
     Node* rootNode;
-    // Constructor for the Binary Tree Class with rootNode initialized when the object is constructed
-    explicit BinaryTree(Node* head){
-        rootNode = sortedBST(head);
+    explicit BinaryTree(Node* head, int counter){
+        rootNode = sortedBST(head, counter);
     }
-    // In Order traversal of the binary tree with sorted output 
+
+
     void inOrder(Node* current){
         if (current == nullptr){
             return;
@@ -17,7 +17,6 @@ public:
         std::cout << current->key << " ";
         inOrder(current->right);
     }
-    // Post Order traversal of the binary tree with sorted output 
     void postOrder(Node *current){
         if (current == nullptr){
             return;
@@ -26,7 +25,6 @@ public:
         postOrder(current->right);
         std::cout << current->key << " ";
     }
-    // Pre Order traversal of the binary tree with sorted output 
     void preOrder(Node *current){
         if (current == nullptr){
             return;
@@ -35,8 +33,8 @@ public:
         preOrder(current->left);
         preOrder(current->right);
     }
-    // Finds and returns the middle node in linked list using fast and slow pointers 
-    static Node* findMiddle(Node *&head){
+    
+    /*static Node* findMiddle(Node *&head){
         Node *fast = head;
         Node *slow = head;
         Node *prev = nullptr;
@@ -46,17 +44,51 @@ public:
             slow = slow->next;
             fast = fast->next->next;
         }
+        if(fast->next != nullptr) {
+            if((fast->next->next == nullptr) || (fast->next->flag)) {
+            prev = slow;
+            slow = slow->next;
+            }
+        }
 
         if (prev != nullptr) prev->flag=true;
+        // delete fast;
+        // delete prev;
         return slow;
-    }
-    // Recursive conversion of a sorted link list into a Binary Search Tree 
-    static Node* sortedBST(Node *&head) {
+    }*/
+
+    // int getLength(Node *head){
+    //     int length = 0;
+    //     while (head != nullptr){
+    //         length++;
+    //         head = head->next;
+    //     }
+    //     return length;
+    // }
+
+    static Node* findMiddle(int length, Node* list) {
+        length = (length / 2) + 1; 
+        //5/2.5 = 2 AND 6/2 = 3  
+        //1 2 3 4 5    1 2 3 4 5 6
+        //(n-1)/2       n/2     (n/2)-1             
+
+        Node* tempPTR = list;
+        for(int i = 1; i < length; i++) {
+            tempPTR=tempPTR->next;
+        }
+        return tempPTR;
+        }
+    static Node* sortedBST(Node *&head, int length) {
         if (head == nullptr){
             return nullptr;
         }
         //finding the middle value to make root node
-        Node *mid = findMiddle(head);
+        Node *mid = findMiddle(length, head);
+
+        if (mid == nullptr){
+            return nullptr;
+        }
+
         Node *root = mid;
         //need to return the root so the tree is split
         if (head == mid){
@@ -64,16 +96,22 @@ public:
         }
         //we want the head of the left sublist
         //we want the head of the right sublist
-        root->left = sortedBST(head);
-        root->right = sortedBST(mid->next);
+        if(length%2==0) {
+            root->left = sortedBST(head, (length / 2));
+            root->right = sortedBST(mid->next, (length/2)-1);
+        }
+        else{
+            root->left = sortedBST(head, (length-1)/2);
+            root->right = sortedBST(mid->next, (length-1)/2);
+        } 
+        
         return root;
     }
-    // Displays the post order format of the Binary Tree  
+
     void printPostOrder(){
         postOrder(rootNode);
         std::cout << std::endl;
     }
-    // Searches for a specific node with a given key using recursion 
     Node* searchNode(Node* rootNode, unsigned long int key2){
         if (rootNode == nullptr || rootNode->key == key2){
             return rootNode;
