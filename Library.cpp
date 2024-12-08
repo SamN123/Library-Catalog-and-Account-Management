@@ -1,12 +1,12 @@
 #include <algorithm>
 #include <string>
+#include <vector>
 #include <fstream>
 #include <sstream>
 
 #include "LinkedList.cpp"
 
 class Library {
-
 
 public:
 
@@ -34,7 +34,7 @@ public:
     //list1.printList();
     };
     unsigned long int hashFunction(const std::string& entry) { //generates value based on 
-         unsigned long int hash = 0x0;
+         unsigned long int hash = 0;
          
         for(int i = 0; i < 8; i++) {
             hash = i > entry.length()-1 ? hash : hash + entry[i]; //save ascii character value to hash
@@ -44,7 +44,6 @@ public:
     return hash;
         };
 
-    //allowing file to be saved
     void saveCatalog(Node* head) {
         
         std::ofstream outputFile("expanded_book_titles.txt");
@@ -56,6 +55,14 @@ public:
         outputFile.close();
     }
 
-	
+    
+
+	//void saveCatalog(); // save catalog to the file
+	//void loadClientList(); // loads book checked out text file 
+	//void saveClientList(); // saves checked books into text file 
+	// void sortList(); // ** function to use sort function (binary search tree?) 
+	// void searchCatalog();
+	// void borrowBook(); // adding customer to borrowed books text file 
+	// void returnBook(); // removing customer from borrowed books text file 
 	
 };
