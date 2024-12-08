@@ -44,6 +44,7 @@ public:
     return hash;
         };
 
+    //allowing file to be saved
     void saveCatalog(Node* head) {
         
         std::ofstream outputFile("expanded_book_titles.txt");
