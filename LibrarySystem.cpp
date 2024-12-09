@@ -1,5 +1,4 @@
-#include <bits/stdc++.h>
-
+#include <iomanip>
 #include "BinaryTree.cpp"
 #include "Date.cpp"
 #include "Library.cpp"
@@ -7,9 +6,9 @@
 
 using namespace std; 
 
-bool testMODE = false;
-// Menu function that contains the necessary user interface options and test case conditions 
-int menu() {
+bool testMODE = false;      //test mode flag to let developers operate extra commands for debugging
+
+int menu() {    //menu prompt with options for program user
     int choice = 0;
     cout << "\nLibrary Management System\n"
             "1. View All Books\n"
@@ -27,35 +26,40 @@ int menu() {
     cin >> choice;
     return choice;
 }
-// Main Driver that manages the flow of the program 
+
 int main() {
-    // Objects of type LinkedList and Library are created 	
-    LinkedList list1;
+    //declare the linked list books will be read into from the catalogue
+	LinkedList list1;
+    //declare and construct the library object that will prepare the linked list for 
     Library library(list1);
     
-    int choice;
-    int checkoutDays;
-    int currentDate;
+    int choice;             //menu choice storage variable
+    int checkoutDays;       //checkoutDays storage variable
+    int currentDate;        //variable to store the current date
+    Node* temp = nullptr;   //temporary node to traverse linked list and BST when needed
     
-    Node* traverse = list1.getHead();
-    // Control Statement used to assign a hash key to a certain node for a given book title 	
-    while(traverse != nullptr) {
-        traverse->key = library.hashFunction(traverse->title);
-        //cout << hex << traverse->key << endl;
-        traverse = traverse->next;
-    }
-    
-    //list1.printList();
+    //sort list to prepare it for BST construction
     list1.sortList();
-    list1.printList();
+    if(testMODE==true)list1.printList(); //list print out to show that the list is properly ordered by key value
 
-    // Object of type BinaryTree created and initialized with the head node from linked list 
-    BinaryTree tree(list1.getHead());
     
+    BinaryTree tree(list1.getHead(), library.counter);
+    if(testMODE==true)tree.inOrder(tree.rootNode);  //tree print out to verify the BST is properly created
     string input;
     unsigned long int hashvalue = 0;
-    // Prompts user for an integer date (format: yyyymmdd) 
-    cout << dec << "Please enter today's date" << endl;
+
+    if(testMODE == true) {      //testing check to find key values dropped from the BST
+        temp = list1.getHead();
+        int i = 1;
+        while(temp != nullptr){
+            if(tree.searchNode(tree.rootNode, library.hashFunction(temp->title)) == nullptr) {
+                cout << i << " " << temp->title << endl << temp->key << " " << tree.searchNode(tree.rootNode, library.hashFunction(temp->title)) << endl;
+            }
+            temp = temp->next; i++;
+        }
+    }
+
+    cout << dec << "Please enter today's date" << endl << "Format: YYYYMMDD" << endl;
     cin >> currentDate;
     Date date(currentDate);
     do {
@@ -63,13 +67,14 @@ int main() {
         choice = menu();
         switch (choice) {
             case 1: // View all books in the catalog
-                traverse = list1.getHead();
-                cout << hex << "The entire catalog" << endl;
-                while(traverse != nullptr) {
-                    cout << traverse->title << " Due Date: " << traverse->date;
-                    cout << " " << traverse->key;
+                temp = list1.getHead();
+                cout << "The entire catalog" << setw(library.width) << "Date Format: YYYYMMDD" << endl;
+                while(temp != nullptr) {
+                    if(temp->date == 0) cout << left << setw(library.width) << temp->title << " Available";
+                    else cout << left << setw(library.width) << temp->title << " Due back: " << temp->date;
+                    if(testMODE==true)cout << " " << temp->key; //key print out for verification keys are properly assigned
                     cout << endl;
-                    traverse = traverse->next;
+                    temp = temp->next;
                 }
                 break;
             case 2: // Search for a book using its title 
@@ -77,35 +82,35 @@ int main() {
                 cin.ignore();
                 getline(cin, input); 
                 cout << endl;
-                //hashvalue = library.hashFunction(input);
-                traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
-                if(traverse == nullptr) cout << "Book not found!" << endl; 
+                hashvalue = library.hashFunction(input);
+                temp = tree.searchNode(tree.rootNode, hashvalue);
+                if(temp == nullptr) cout << input << " not found!" << endl; 
                 else {
-                    if (traverse->date!= 0) 
+                    if (temp->date!= 0) 
                     cout << "Sorry, that book is currently checked out\n"
-                    "It will be back on: " << traverse->date <<
+                    "It will be back on: " << temp->date <<
                     "\nPlease try back then!" << endl;
-                    else cout << traverse->title << " is currently available!" << endl;
+                    else cout << temp->title << " is currently available!" << endl;
                 }
                 break;
             case 3: // Borrow a book
                 cout << "Please enter the title of the book you'd like" << endl;
                 cin.ignore();
                 getline(cin, input); cout << endl;
-                traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
-                if(traverse == nullptr) cout << "Book not found!" << endl; 
+                temp = tree.searchNode(tree.rootNode, library.hashFunction(input));
+                if(temp == nullptr) cout << input << " not found!" << endl; 
                 else {
-                    if (traverse->date != 0) {
+                    if (temp->date != 0) {
                     cout << "Sorry, that book is currently checked out\n"
-                    "It will be back on: " << traverse->date <<
+                    "It will be back on: " << temp->date <<
                     "\nPlease try back then!" << endl;
                     }
-                    else {cout << traverse->title << " is currently available!" << endl;
+                    else {cout << temp->title << " is currently available!" << endl;
                     cout << "You can borrow this for a max of 14 days\n"
                     "How long would you like to borrow this for?" << endl;
                     cin >> checkoutDays;
-                    traverse->date = date.newDate(checkoutDays);
-                    cout << traverse->title << " is due on " << traverse->date << endl;
+                    temp->date = date.newDate(checkoutDays);
+                    cout << temp->title << " is due on " << temp->date << endl;
                     }
                 }
                 break;
@@ -113,10 +118,10 @@ int main() {
                 cout << "Please enter the title of the book you'd like to return" << endl;
                 cin.ignore();
                 getline(cin, input); cout << endl;
-                traverse = tree.searchNode(tree.rootNode, library.hashFunction(input));
-                if(traverse == nullptr) cout << "Book not found!" << endl; 
+                temp = tree.searchNode(tree.rootNode, library.hashFunction(input));
+                if(temp == nullptr) cout << input <<  " not found!" << endl; 
                 else {
-                    traverse->date = 0;
+                    temp->date = 0;
                     cout << "Thank you! Have a good day" << endl;
                 }
                 break;
