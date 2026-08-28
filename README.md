@@ -1,72 +1,107 @@
-TO DO: 
-----------------------------------------------------------------------------
-** Create a sorting function to sort list based on the hashed values.**
-** Use middle value as the root insert for the balanced bst ** 
+# Library Catalog and Account Management System
 
+A C++ library management application for organizing a book catalog, searching for books, and managing borrowing and return operations.
 
-1. Create text files (2) for book catalog and borrowed catalog
-2. Create function implementations.
-3. Divide up tasks between members.
-4. Finish implementing code.
-5. Test and finish paper + presentation slides. 
------------------------------------------------------------------------------
-Project Points to keep in mind from canvas: 
-This will be a group project: There will be two groups splitting the class in two.
+The application uses custom data structures and algorithms to organize catalog data and provide efficient access to book records. Catalog and account information is stored through local text files so that data can be retained between sessions.
 
-Deliverables:
+## Features
 
-1. Code (40 pts: Breakdown will be by feature you submit.  For example if your project includes a data structure, a sorting algorithm, a search algorithm and a class hierarchy, I will divide the 40 pts by 4 where each listed item will be graded based on 10 pts )
+* View and manage a library book catalog
+* Search the catalog for books by title
+* Borrow and return books
+* Track books associated with library users
+* Load and save catalog data using text files
+* Sort catalog records for organized retrieval
+* Generate identifiers from book information using hashing
 
-2. Documentation: APA Style Paper as describe in the course. (35 pts: Intro 5pts, procedure 10pts, Discussion 15 pts, conclusion 5pts Paper is individual)
+## Data Structures and Algorithms
 
-3.  Class Presentation: Power Points (25 pts: Present as a group, each will get up to 25 pts.)  You will submit your Power Point to the Final Project Presentation section on Canvas. (Presentation in class).
+The system implements several core data structures and algorithms rather than relying entirely on built in containers and sorting utilities.
 
-4.  Your code and paper will be submitted here.
+### Linked List
 
-Steps for group work:
+Catalog records can be stored and manipulated through a custom linked list implementation.
 
-1. Pick your teammates and make sure that you have worked out all details for communications and versioning of your collective code.
+### Merge Sort
 
-2. Pick a topic based on your group discussions and evaluate the merits of your options before finalizing your choice.
+Merge sort is used to organize catalog data before it is transferred into the search structure.
 
-3. Set a schedule to work together on campus, in class and online.
+### Binary Search Tree
 
-4. Make sure that you keep track of the group members participation by allocating specific tasks to be completed with deadlines
+Sorted catalog information is incorporated into a binary search tree to support structured storage, traversal, insertion, searching, and deletion.
 
-5. Work together and compromise; group dynamics are important in real world settings. 
+### Hashing
 
-Steps for individual work (If it applies):
+Book information is converted into numeric identifiers through a hashing function used by the catalog system.
 
-1. Pick a topic that will require a data structure such as lists, stacks, queues, trees, dictionaries, or a combination for implementation.
+## Application
 
-2. Make sure that the implementation is OOP in nature
+The command line interface provides the main library operations:
 
-3. You must have features such as sorting and searching at minimum.
+1. View the book catalog
+2. Search for a book
+3. Borrow a book
+4. Return a book
+5. Exit the application
 
-4. You're subject to the same deadlines as the group project teams.
+Catalog and client records are read from and written to local text files.
 
-5.  Submit code, paper and present at the same time as the teams (See deliverables above). 
+## Built With
 
-Scope for grading and assessment :
+* C++
+* Object oriented programming
+* Linked lists
+* Binary search trees
+* Merge sort
+* Hashing
+* File I/O
 
-Make sure that your project maps to our course learning objectives and outcomes:
+## Repository Structure
 
-1. Identify early on, the techniques that you will use based on the data structure of choice that you as a group agreed upon. (ABET Outcome 1)
+`LibrarySystem.cpp`
+Contains the main library application and command line interface.
 
-2. STL authorized (ABET Outcome 2)
+`catalog.txt`
+Stores book catalog data used by the application.
 
-3. All code must be OOP (ABET Outcome 2)
+`Client.txt`
+Stores client and borrowing information.
 
-4. All code must be original (No copying or copy and paste from any source, failure to do so is an automatic fail for the course)
+`linListTxtTest.cpp`
+Linked list and file handling implementation/testing.
 
-5. All papers must have work cited and a reference page (a failing grade  for the assignment will be issued if these are missing). (ABET Outcome 3)
+`sortedLinListToBST.cpp`
+Contains logic for transferring sorted linked list data into a binary search tree.
 
-6. You must have a minimum of 5 test cases where you analyze the performance of your application based on various input data. (ABET Outcome 4)
+`bstOutline.cpp`
+Binary search tree implementation and supporting operations.
 
-7. In your documentation, describe the various roles you undertook as a team leader, team member and make sure that you demonstrate how you measured your performance
+## Running the Application
 
-in terms of project planning, team discussions and tasks allocations, effort and workload.  Do include your strength and weaknesses during these processes (Will not effect your grade negatively).  (ABET Outcome 5)
+Clone the repository:
 
-This project is followed with a class presentation (See Canvas for details)
+```bash
+git clone https://github.com/SamN123/Library-Catalog-and-Account-Management.git
+```
 
- 
+Move into the project directory:
+
+```bash
+cd Library-Catalog-and-Account-Management
+```
+
+Compile the application with a C++ compiler. For example:
+
+```bash
+g++ LibrarySystem.cpp -o library
+```
+
+Run the executable:
+
+```bash
+./library
+```
+
+## Purpose
+
+This project explores how common data structures can be combined in a larger C++ application rather than implemented only as isolated examples. The library system provides a practical use case for sorting, searching, persistent file storage, and managing relationships between books and users.
